@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import './MovieList.css'
 import MovieCard from './MovieCard.jsx';
+import LoadMore from "./LoadMore.jsx";
 
 function MovieList() {
     return (
@@ -11,6 +12,7 @@ function MovieList() {
                 <MovieCard />
                 <MovieCard />
             </div>
+            <LoadMore />
         </div>
     );
 }

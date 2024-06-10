@@ -5,7 +5,7 @@ import "./SortMovie.css";
 function SortMovie(movie) {
     return (
         <div id="sortBar">
-            <p>Sort</p>
+            <button>Sort</button>
         </div>
     );
 }

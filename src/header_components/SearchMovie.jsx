@@ -4,8 +4,8 @@ import "./SearchMovie.css";
 
 function SearchMovie(movie) {
     return (
-        <div id="searchBar">
-            <p>Search</p>
+        <div>
+            <input id="searchBar" type="text" placeholder="Search movies..."></input>
         </div>
     );
 }

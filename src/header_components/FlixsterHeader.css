@@ -2,3 +2,7 @@ h1 {
     color: rgb(185, 185, 185);
     text-align: center;
 }
+
+#headerFeatures {
+    display: inline-flex;
+}

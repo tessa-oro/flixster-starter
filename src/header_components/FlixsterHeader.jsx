@@ -8,8 +8,10 @@ function FlixsterHeader() {
         <header>
             <h1>Flixster</h1>
             <div>
-                <SearchMovie />
-                <SortMovie />
+                <div id="headerFeatures">
+                    <SearchMovie />
+                    <SortMovie />
+                </div>
             </div>
         </header>
     );

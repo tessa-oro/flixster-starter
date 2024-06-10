@@ -6,9 +6,7 @@ import MovieList from './body_components/MovieList'
 function App() {
   return (
     <div className="App">
-      <header>
-        <FlixsterHeader />
-      </header>
+      <FlixsterHeader />
       <MovieList />
     </div>
   );
