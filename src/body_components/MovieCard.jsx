@@ -5,8 +5,7 @@ import ReactDOM from "react-dom";
 function MovieCard(movie) {
     return (
         <div id="movieCard">
-            <p>Card</p>
-            <p>{movie.title}</p>
+            <p>{movie.name}</p>
             <img src={movie.poster}/>
             <p>{movie.rating}</p>
         </div>

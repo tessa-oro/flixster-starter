@@ -1,9 +1,17 @@
 import React from 'react';
 import "./FlixsterHeader.css"
+import SearchMovie from "./SearchMovie";
+import SortMovie from "./SortMovie";
 
 function FlixsterHeader() {
     return (
-        <h1>Flixster</h1>
+        <header>
+            <h1>Flixster</h1>
+            <div>
+                <SearchMovie />
+                <SortMovie />
+            </div>
+        </header>
     );
 }
 

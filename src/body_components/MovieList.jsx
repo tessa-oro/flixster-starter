@@ -6,9 +6,8 @@ import MovieCard from './MovieCard.jsx';
 function MovieList() {
     return (
         <div>
-            <p>This is card section</p>
             <div id="cardSection">
-                <MovieCard />
+                <MovieCard name="Interstellar" rating="4.5"/>
                 <MovieCard />
                 <MovieCard />
             </div>

@@ -1,6 +1,5 @@
 #movieCard {
     box-shadow: 2px 2px 5px rgba(101, 101, 101, 0.539);
-    display: flex;
     width: 200px;
     height: 300px;
     border-radius: 10px;
