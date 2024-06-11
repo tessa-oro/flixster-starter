@@ -3,7 +3,6 @@ import {useState, useEffect} from 'react';
 import ReactDOM from "react-dom";
 import './MovieList.css'
 import MovieCard from './MovieCard';
-import LoadMore from "./LoadMore.jsx";
 
 const MovieList = () => {
     const [data, setData] = useState([]);
@@ -32,7 +31,7 @@ const MovieList = () => {
         <div>
             <div id="cardSection">
                 {data.map(movie => (
-                    <MovieCard name={movie.name} poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} rating={movie.vote_average} key={movie.id} />)
+                    <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} name={movie.title} rating={movie.vote_average} key={movie.id} />)
                 )}
             </div>
             <button onClick={loadMoreMovies}>Load More</button>
