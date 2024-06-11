@@ -7,6 +7,7 @@ import LoadMore from "./LoadMore.jsx";
 
 const MovieList = () => {
     const [data, setData] = useState([]);
+    const [pageNum, setPageNum] = useState(1);
 
     useEffect(() => {
         const options = {
@@ -17,11 +18,15 @@ const MovieList = () => {
             }
             };
             
-            fetch('https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1', options)
+            fetch(`https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${pageNum}`, options)
             .then(response => response.json())
-            .then(response => setData(response.results))
+            .then(response => setData([...data, ...response.results]))
             .catch(err => console.error(err));
-        }, []);
+        }, [pageNum]);
+    
+        const loadMoreMovies = () => {
+            setPageNum(pageNum + 1);
+        }
 
     return (
         <div>
@@ -30,7 +35,7 @@ const MovieList = () => {
                     <MovieCard name={movie.name} poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} rating={movie.vote_average} key={movie.id} />)
                 )}
             </div>
-            <LoadMore />
+            <button onClick={loadMoreMovies}>Load More</button>
         </div>
     );
 }
