@@ -2,12 +2,12 @@ import "./MovieCard.css";
 import React from "react";
 import ReactDOM from "react-dom";
 
-function MovieCard(movie) {
+const MovieCard = ({name, poster, rating}) => {
     return (
         <div id="movieCard">
-            <p>{movie.name}</p>
-            <img src={movie.poster}/>
-            <p>{movie.rating}</p>
+            <p id="movieName">{name}</p>
+            <img id="moviePoster" src={poster}/>
+            <p id="movieRating">{rating}</p>
         </div>
     );
 }
