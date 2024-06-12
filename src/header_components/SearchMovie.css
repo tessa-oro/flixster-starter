@@ -1,3 +1,7 @@
 #searchBar {
     text-align: center;
 }
+
+#submitSearch {
+    margin-right: 20%;
+}
