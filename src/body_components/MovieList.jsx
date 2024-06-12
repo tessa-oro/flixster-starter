@@ -3,10 +3,15 @@ import {useState, useEffect} from 'react';
 import ReactDOM from "react-dom";
 import './MovieList.css'
 import MovieCard from './MovieCard';
+import {BsSearch} from 'react-icons/bs';
+import {useRef} from 'react';
+/*import MovieModal from './MovieModal'; */
 
 const MovieList = () => {
     const [data, setData] = useState([]);
     const [pageNum, setPageNum] = useState(1);
+    const [searchMovie, setSearchMovie] = useState("");
+    const [showSearchPanel, setShowSearchPanel] = useState(false);
 
     useEffect(() => {
         const options = {
@@ -27,11 +32,40 @@ const MovieList = () => {
             setPageNum(pageNum + 1);
         }
 
+        const showSearch = () => {
+            setShowSearchPanel(!showSearchPanel);
+        };
+        
+        const handleSearchButton = () => {
+            console.log('searchclicked');
+            if (searchMovie === "") {
+                setData(data); return;
+            }
+            const filterBySearch = data.filter((movie) => {
+                if (movie.title.toLowerCase().includes(searchMovie.toLowerCase())) {
+                    return movie;
+                }
+            })
+            setData(filterBySearch);
+        }
+
     return (
-        <div>
+        <div> 
+            <div>
+            <button onClick={showSearch}>Search</button>
+            {showSearchPanel ? (
+                <>
+                    <span>
+                        <input id='searchBar' onChange={e => setSearchMovie(e.target.value)}></input>
+                        <BsSearch id='searchGo' onClick={handleSearchButton} />
+                    </span>
+                </>
+             ) : <></>}
+            </div>
             <div id="cardSection">
                 {data.map(movie => (
-                    <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} name={movie.title} rating={movie.vote_average} key={movie.id} />)
+                    <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                    name={movie.title} rating={movie.vote_average} key={movie.id} />)
                 )}
             </div>
             <button onClick={loadMoreMovies}>Load More</button>

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 
 const MovieCard = ({name, poster, rating}) => {
     return (
-        <div id="movieCard">
+        <div id="movieCard" /*onClick={showModal()} */>
             <img id="moviePoster" src={poster}/>
             <p id="movieName">{name}</p>
             <p id="movieRating">Rating: {rating}</p>
