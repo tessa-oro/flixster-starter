@@ -13,6 +13,10 @@ const MovieList = () => {
     const [searchMovie, setSearchMovie] = useState("");
     const [showSearchPanel, setShowSearchPanel] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
+    const [sortResults, setSortResults] = useState([]);
+    const [wantSort, setWantSort] = useState(false);
+    const [sortValue, setSortValue] = useState("");
+    const [sortPick, setSortPick] = useState("");
 
     useEffect(() => {
         const options = {
@@ -25,86 +29,112 @@ const MovieList = () => {
 
             let url = `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${pageNum}`;
             if (searchMovie) {
-                    console.log('searching');
                     url = `https://api.themoviedb.org/3/search/movie?query=${searchMovie}&page=1&language=en-US&api_key=912984bbab4ba2db25b91655ca64056f`;
-                    fetch(url, options).
-                    then(response => response.json())
+                    fetch(url, options)
+                    .then(response => response.json())
                     .then(response => setSearchResults(response.results))
                     .catch(err => console.error(err)); 
-                    console.log(searchResults);
+             } else if (wantSort) {
+                console.log('sorting');
+                url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=${sortValue}`;
+                fetch(url, options)
+                .then(response => response.json())
+                .then(response => setSortResults(response.results))
+                .catch(err => console.error(err)); 
              } else {
                 fetch(url, options)
                 .then(response => response.json())
                 .then(response => setData([...data, ...response.results]))
                 .catch(err => console.error(err));
              }
-        }, [pageNum, searchMovie]);
+        }, [pageNum, searchMovie, sortValue]);
 
     
-        const loadMoreMovies = () => {
-            setPageNum(pageNum + 1);
-        }
+    const loadMoreMovies = () => {
+        setPageNum(pageNum + 1);
+    }
 
-        // use effect to query search results using async
-        /*useEffect(() => {
-            if (searchMovie) {
-                const url = `https://api.themoviedb.org/3/search/movie?query=${searchMovie}&page=1&language=en-US&api_key=912984bbab4ba2db25b91655ca64056f`;
-                fetch(url).
-                then(response => response.json())
-                .then(response => setSearchResults([...data, ...response.results]))
-                .catch(err => console.error(err)); 
-            };
-            //fetchSearchResults();
-        }, [searchMovie]); */
 
+    const showSearch = () => {
+        console.log('show search switched');
+        setShowSearchPanel(!showSearchPanel);
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        let searchingFor = e.target.elements.movieSearch.value;
+        console.log(searchingFor);
+        setSearchMovie(searchingFor);
+    }
     
-        const showSearch = () => {
-            console.log('show search switched');
-            setShowSearchPanel(!showSearchPanel);
-        };
-
-        const handleSearch = (e) => {
-            e.preventDefault();
-            let searchingFor = e.target.elements.movieSearch.value;
-            console.log(searchingFor);
-            //searchMovie = searchingFor;
-            //console.log(searchMovie);
-            setSearchMovie(searchingFor);
-            //console.log(searchMovie);
+    const handleSort = (e) => {
+        console.log('sorting');
+        const selectedSort = e.target.value;
+        setSortPick(selectedSort);
+        console.log(selectedSort);
+        if (selectedSort === '--none--') {
+            setWantSort(false);
+        } else if (selectedSort === 'title') {
+            setWantSort(true);
+            setSortValue('title.asc');
+        } else if (selectedSort === 'rating') {
+            setWantSort(true);
+            setSortValue('vote_average.desc');
+        } else {
+            setWantSort(true);
+            setSortValue('primary_release_date.desc');
         }
-/*
-        const setSearchTerm = (searchingFor) => {
-            console.log(searchingFor);
-            setSearchMovie(searchingFor);
-            console.log(searchMovie);
-        } */
-        //console.log(searchMovie);
-    return (
-        <div> 
+    }
+
+
+    return ( 
             <div>
-            <button onClick={showSearch}>Search Movies</button>
             {showSearchPanel ? (
                 <>
                     <form onSubmit= {(e) => {handleSearch(e)}}> {/*turn into form and do on submit handle submit and quere is searchmovie*/}
                         <input id='searchBar' input='text' name='movieSearch' placeholder='search'></input>
                         <button id='searchGo'>Go</button>
                     </form>
+                    <button onClick={showSearch}>Back to Now Playing</button>
                     <div id="cardSection">
                         {searchResults.map(movie => (
-                        <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                        name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`} />)
+                            <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                            name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`} />)
                         )}                    
                     </div>
                 </>
-             ) : <div id="cardSection">
-                    {data.map(movie => (
-                    <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                    name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`} />)
-                    )}
-                </div>}
+            ) : (
+                <>
+                <button onClick={showSearch}>Search Movies</button>
+                <label>Sort by:</label>
+                    <select value={sortPick} onChange={handleSort} name="sort" id="sort-option">
+                        <option value="">--none--</option>
+                        <option value="title">Title</option>
+                        <option value="rating">Rating</option>
+                        <option value="relDate">Release Date</option>
+                    </select>
+                {wantSort ? ( 
+                    <>
+                    <div id="cardSection">
+                    {sortResults.map(movie => (
+                        <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                        name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`} />)
+                    )}                    
+                    </div>
+                    <button onClick={loadMoreMovies}>Load More</button> </>
+                ) :
+                (<>
+                <div id="cardSection">
+                        {data.map(movie => (
+                            <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                            name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`} />)
+                        )}
+                </div>
+                <button onClick={loadMoreMovies}>Load More</button>
+                </>)}
+                </>
+                )}
             </div>
-            <button onClick={loadMoreMovies}>Load More</button>
-        </div>
     );
 }
 
