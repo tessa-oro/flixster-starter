@@ -5,7 +5,7 @@ import './MovieList.css'
 import MovieCard from './MovieCard';
 import {BsSearch} from 'react-icons/bs';
 import {useRef} from 'react';
-/*import MovieModal from './MovieModal'; */
+import MovieModal from './MovieModal'; 
 
 const MovieList = () => {
     const [data, setData] = useState([]);
@@ -17,6 +17,8 @@ const MovieList = () => {
     const [wantSort, setWantSort] = useState(false);
     const [sortValue, setSortValue] = useState("");
     const [sortPick, setSortPick] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [modalMovie, setModalMovie] = useState([]);
 
     useEffect(() => {
         const options = {
@@ -29,19 +31,20 @@ const MovieList = () => {
 
             let url = `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${pageNum}`;
             if (searchMovie) {
-                    url = `https://api.themoviedb.org/3/search/movie?query=${searchMovie}&page=1&language=en-US&api_key=912984bbab4ba2db25b91655ca64056f`;
+                    url = `https://api.themoviedb.org/3/search/movie?query=${searchMovie}&page=${pageNum}&language=en-US&api_key=912984bbab4ba2db25b91655ca64056f`;
                     fetch(url, options)
                     .then(response => response.json())
                     .then(response => setSearchResults(response.results))
                     .catch(err => console.error(err)); 
              } else if (wantSort) {
                 console.log('sorting');
-                url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=${sortValue}`;
+                url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${pageNum}&sort_by=${sortValue}`;
                 fetch(url, options)
                 .then(response => response.json())
                 .then(response => setSortResults(response.results))
                 .catch(err => console.error(err)); 
              } else {
+                setPageNum(1);
                 fetch(url, options)
                 .then(response => response.json())
                 .then(response => setData([...data, ...response.results]))
@@ -65,14 +68,14 @@ const MovieList = () => {
         let searchingFor = e.target.elements.movieSearch.value;
         console.log(searchingFor);
         setSearchMovie(searchingFor);
+        setPageNum(1);
     }
     
     const handleSort = (e) => {
-        console.log('sorting');
         const selectedSort = e.target.value;
         setSortPick(selectedSort);
-        console.log(selectedSort);
-        if (selectedSort === '--none--') {
+        setPageNum(1);
+        if (selectedSort === '') {
             setWantSort(false);
         } else if (selectedSort === 'title') {
             setWantSort(true);
@@ -86,6 +89,15 @@ const MovieList = () => {
         }
     }
 
+    const displayModal = (movie) => {
+        setShowModal(true);
+        setModalMovie(movie);
+    }
+
+    const closeModal = () => {
+        setShowModal(false);
+        setModalMovie([]);
+    }
 
     return ( 
             <div>
@@ -99,9 +111,14 @@ const MovieList = () => {
                     <div id="cardSection">
                         {searchResults.map(movie => (
                             <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                            name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`} />)
-                        )}                    
+                            name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`}
+                            modalOpen={() => displayModal(movie)} />)
+                        )}
+                        { showModal ? (
+                            <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
+                        ) : (<></>)}                     
                     </div>
+                    <button onClick={loadMoreMovies}>Load More</button>
                 </>
             ) : (
                 <>
@@ -118,8 +135,12 @@ const MovieList = () => {
                     <div id="cardSection">
                     {sortResults.map(movie => (
                         <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                        name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`} />)
-                    )}                    
+                        name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`}
+                        modalOpen={() => displayModal(movie)} />)
+                    )} 
+                    { showModal ? (
+                            <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
+                    ) : (<></>)}                    
                     </div>
                     <button onClick={loadMoreMovies}>Load More</button> </>
                 ) :
@@ -127,9 +148,13 @@ const MovieList = () => {
                 <div id="cardSection">
                         {data.map(movie => (
                             <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                            name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`} />)
+                            name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`}
+                            modalOpen={() => displayModal(movie)} />)
                         )}
-                </div>
+                        { showModal ? (
+                            <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
+                        ) : (<></>)} 
+                </div> 
                 <button onClick={loadMoreMovies}>Load More</button>
                 </>)}
                 </>

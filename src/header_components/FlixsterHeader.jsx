@@ -1,6 +1,5 @@
 import React from 'react';
 import "./FlixsterHeader.css"
-import SortMovie from "./SortMovie";
 
 function FlixsterHeader() {
     return (
@@ -8,7 +7,7 @@ function FlixsterHeader() {
             <h1 id='flixsterHead'>Flixster</h1>
             <div>
                 <div id="headerFeatures">
-                    <SortMovie />
+                    
                 </div>
             </div>
         </header>

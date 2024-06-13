@@ -15,6 +15,10 @@
     border-radius: 4%;
 }
 
+#close {
+    cursor: pointer;
+}
+
 /* #overlay {
     display: none;
     position: fixed;
