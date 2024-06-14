@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react';
 import './MovieList.css'
 import MovieCard from './MovieCard';
 import MovieModal from './MovieModal'; 
+import Sidebar from './Sidebar';
 
 const MovieList = () => {
     const [data, setData] = useState([]);
@@ -16,6 +17,7 @@ const MovieList = () => {
     const [sortPick, setSortPick] = useState("");
     const [showModal, setShowModal] = useState(false);
     const [modalMovie, setModalMovie] = useState([]);
+    const [favMovies, setFavMovies] = useState([]);
 
     useEffect(() => {
         const options = {
@@ -26,9 +28,9 @@ const MovieList = () => {
             }
             };
 
-            let url = `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${pageNum}`;
+            let url = `https://api.themoviedb.org/3/movie/now_playing?language=en-US&include_adult=false&page=${pageNum}`;
             if (searchMovie) { //fetches search api with query of movie the user is searching for
-                    url = `https://api.themoviedb.org/3/search/movie?query=${searchMovie}&page=${pageNum}&language=en-US&api_key=912984bbab4ba2db25b91655ca64056f`;
+                    url = `https://api.themoviedb.org/3/search/movie?query=${searchMovie}&page=${pageNum}&language=en-US&include_adult=false&api_key=912984bbab4ba2db25b91655ca64056f`;
                     fetch(url, options)
                     .then(response => response.json())
                     .then(response => setSearchResults([...searchResults, ...response.results]))
@@ -112,6 +114,10 @@ const MovieList = () => {
         setModalMovie([]);
     }
 
+    const addToBar = (movieTitle) => {
+        setFavMovies([...favMovies, movieTitle]);
+    }
+
     return ( 
             <div>
             {showSearchPanel ? (
@@ -134,7 +140,7 @@ const MovieList = () => {
                     <button onClick={loadMoreMovies}>Load More</button>
                 </>
             ) : (
-                <>
+                <div>
                 <button onClick={showSearch} id="searchButton">Search Movies</button>
                 <label id="sortLabel">Sort by:</label>
                     <select value={sortPick} onChange={handleSort} name="sort" id="sort-option">
@@ -143,8 +149,9 @@ const MovieList = () => {
                         <option value="rating">Rating</option>
                         <option value="relDate">Release Date</option>
                     </select>
+                <div id="mainBody">
                 {wantSort ? ( 
-                    <>
+                    <div id="movies">
                     <div id="cardSection">
                     {sortResults.map(movie => (
                         <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
@@ -155,14 +162,14 @@ const MovieList = () => {
                             <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
                     ) : (<></>)}                    
                     </div>
-                    <button onClick={loadMoreMovies}>Load More</button> </>
+                    <button onClick={loadMoreMovies}>Load More</button> </div>
                 ) :
-                (<>
+                (<div id="movies">
                 <div id="cardSection">
                         {data.map(movie => (
                             <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                             name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random *100}`}
-                            modalOpen={() => displayModal(movie)} />)
+                            modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}/>)
                         )}
                         { showModal ? (
                             <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
@@ -170,8 +177,10 @@ const MovieList = () => {
                         : (<></>)} 
                 </div> 
                 <button id="loadMore" onClick={loadMoreMovies}>Load More</button>
-                </>)}
-                </>
+                </div>)}
+                <Sidebar movieMap={favMovies}/>
+                </div>
+                </div>
                 )}
             </div>
     );
