@@ -7,11 +7,11 @@ import {useState} from 'react';
 const Sidebar = ({movieMap}) => {
 
     return (
-        <div>
-            <p>Favorite Movies</p>
+        <div id="sidebar">
+            <h2> &#128153; Favorite Movies</h2>
             <div>
             {movieMap.map(movie => (
-                <p>{movie}</p>
+                <p id="movieName">{movie}</p>
             ))}
             </div>
         </div>

@@ -118,6 +118,10 @@ const MovieList = () => {
         setFavMovies([...favMovies, movieTitle]);
     }
 
+    const removeFromBar = (movieTitle) => {
+        setFavMovies(favMovies.filter(e => e !== movieTitle));
+    }
+
     return ( 
             <div>
             {showSearchPanel ? (
@@ -131,7 +135,7 @@ const MovieList = () => {
                         {searchResults.map(movie => (
                             <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                             name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`}
-                            modalOpen={() => displayModal(movie)} />)
+                            modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}/>)
                         )}
                         { showModal ? (
                             <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
@@ -156,7 +160,7 @@ const MovieList = () => {
                     {sortResults.map(movie => (
                         <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                         name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random *10}`}
-                        modalOpen={() => displayModal(movie)} />)
+                        modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}/>)
                     )} 
                     { showModal ? (
                             <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
@@ -169,7 +173,8 @@ const MovieList = () => {
                         {data.map(movie => (
                             <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                             name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random *100}`}
-                            modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}/>)
+                            modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}
+                            removeFromBar={() => removeFromBar(movie.title)}/>)
                         )}
                         { showModal ? (
                             <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
