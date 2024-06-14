@@ -1,7 +1,7 @@
 #movieCard {
     box-shadow: 2px 2px 5px rgba(101, 101, 101, 0.539);
-    width: 270px;
-    height: 500px;
+    width: 200px;
+    height: 350px;
     border-radius: 10px;
     padding: 20px;
     cursor: pointer;
@@ -17,8 +17,13 @@
     transform: translate3d(0, -2px, 0) scale(1.04);
 }
 
+p {
+    padding: 0px;
+    margin: 9px;
+}
+
 #moviePoster {
-    height: 80%;
+    height: 70%;
     border-radius: 7px;
 }
 

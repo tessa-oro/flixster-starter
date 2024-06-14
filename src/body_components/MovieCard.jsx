@@ -1,6 +1,5 @@
 import "./MovieCard.css";
 import React from "react";
-import ReactDOM from "react-dom";
 
 const MovieCard = ({name, poster, rating, modalOpen}) => {
     return (

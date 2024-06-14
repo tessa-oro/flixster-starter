@@ -1,10 +1,7 @@
 import React from "react";
 import {useState, useEffect} from 'react';
-import ReactDOM from "react-dom";
 import './MovieList.css'
 import MovieCard from './MovieCard';
-import {BsSearch} from 'react-icons/bs';
-import {useRef} from 'react';
 import MovieModal from './MovieModal'; 
 
 const MovieList = () => {
@@ -30,49 +27,59 @@ const MovieList = () => {
             };
 
             let url = `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${pageNum}`;
-            if (searchMovie) {
+            if (searchMovie) { //fetches search api with query of movie the user is searching for
                     url = `https://api.themoviedb.org/3/search/movie?query=${searchMovie}&page=${pageNum}&language=en-US&api_key=912984bbab4ba2db25b91655ca64056f`;
                     fetch(url, options)
                     .then(response => response.json())
-                    .then(response => setSearchResults(response.results))
+                    .then(response => setSearchResults([...searchResults, ...response.results]))
                     .catch(err => console.error(err)); 
-             } else if (wantSort) {
-                console.log('sorting');
+             } else if (wantSort) { //fetches sort api, sorted by the option user selected
                 url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${pageNum}&sort_by=${sortValue}`;
                 fetch(url, options)
                 .then(response => response.json())
-                .then(response => setSortResults(response.results))
+                .then(response => setSortResults([...sortResults, ...response.results]))
                 .catch(err => console.error(err)); 
-             } else {
+             } else { //fetches now playing
                 setPageNum(1);
                 fetch(url, options)
                 .then(response => response.json())
                 .then(response => setData([...data, ...response.results]))
                 .catch(err => console.error(err));
              }
-        }, [pageNum, searchMovie, sortValue]);
+        }, [pageNum, searchMovie, sortValue, wantSort]);
 
-    
-    const loadMoreMovies = () => {
+    /*
+    increases page numbers showing when user clicks load more
+    8*/
+    const loadMoreMovies = () => { 
         setPageNum(pageNum + 1);
     }
 
-
-    const showSearch = () => {
-        console.log('show search switched');
+    /* 
+    clears movies on page shows search bar when user clicks search movies 
+    */
+    const showSearch = () => { 
+        setSearchMovie("");
+        setSearchResults([]);
         setShowSearchPanel(!showSearchPanel);
     };
 
-    const handleSearch = (e) => {
+    /* 
+    takes in user search and sets searchMovie to that user input for the search api
+    */
+    const handleSearch = (e) => { 
         e.preventDefault();
         let searchingFor = e.target.elements.movieSearch.value;
-        console.log(searchingFor);
         setSearchMovie(searchingFor);
         setPageNum(1);
     }
     
+    /* 
+    if user selects a search option, wantSort is set to true and sortValue is set to corresponding pick for sort api
+    */
     const handleSort = (e) => {
         const selectedSort = e.target.value;
+        setSearchResults([]);
         setSortPick(selectedSort);
         setPageNum(1);
         if (selectedSort === '') {
@@ -89,11 +96,17 @@ const MovieList = () => {
         }
     }
 
+    /*
+    displays modal with the movie info of the movie user clicked on
+    */
     const displayModal = (movie) => {
         setShowModal(true);
         setModalMovie(movie);
     }
 
+    /* 
+    closes the modal
+    */
     const closeModal = () => {
         setShowModal(false);
         setModalMovie([]);
@@ -103,7 +116,7 @@ const MovieList = () => {
             <div>
             {showSearchPanel ? (
                 <>
-                    <form onSubmit= {(e) => {handleSearch(e)}}> {/*turn into form and do on submit handle submit and quere is searchmovie*/}
+                    <form onSubmit= {(e) => {handleSearch(e)}}>
                         <input id='searchBar' input='text' name='movieSearch' placeholder='search'></input>
                         <button id='searchGo'>Go</button>
                     </form>
@@ -122,8 +135,8 @@ const MovieList = () => {
                 </>
             ) : (
                 <>
-                <button onClick={showSearch}>Search Movies</button>
-                <label>Sort by:</label>
+                <button onClick={showSearch} id="searchButton">Search Movies</button>
+                <label id="sortLabel">Sort by:</label>
                     <select value={sortPick} onChange={handleSort} name="sort" id="sort-option">
                         <option value="">--none--</option>
                         <option value="title">Title</option>
@@ -135,7 +148,7 @@ const MovieList = () => {
                     <div id="cardSection">
                     {sortResults.map(movie => (
                         <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                        name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`}
+                        name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random *10}`}
                         modalOpen={() => displayModal(movie)} />)
                     )} 
                     { showModal ? (
@@ -148,14 +161,15 @@ const MovieList = () => {
                 <div id="cardSection">
                         {data.map(movie => (
                             <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                            name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`}
+                            name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random *100}`}
                             modalOpen={() => displayModal(movie)} />)
                         )}
                         { showModal ? (
                             <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
-                        ) : (<></>)} 
+                        ) 
+                        : (<></>)} 
                 </div> 
-                <button onClick={loadMoreMovies}>Load More</button>
+                <button id="loadMore" onClick={loadMoreMovies}>Load More</button>
                 </>)}
                 </>
                 )}

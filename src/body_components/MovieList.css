@@ -3,6 +3,15 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
+#searchButton {
+    margin-right: 4%;
+}
+
+#sortLabel {
+    padding-left: 4%;
+}
+
 /*
 #searchBar {
     display: none;

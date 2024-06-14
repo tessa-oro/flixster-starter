@@ -1,9 +1,9 @@
 import "./MovieModal.css";
 import React from "react";
-import ReactDOM from "react-dom";
 
 const MovieModal = ({name, poster, release, overview, closeModal}) => {
     return (
+        <>
         <div id="cardModal">
             <p id="close" onClick={closeModal}>&times;</p>
             <div id="modal-content">
@@ -13,6 +13,8 @@ const MovieModal = ({name, poster, release, overview, closeModal}) => {
                 <p id="movieOverview">{overview}</p>
             </div>
         </div>
+        <div id="overlay"></div>
+        </>
     );
 }
 
