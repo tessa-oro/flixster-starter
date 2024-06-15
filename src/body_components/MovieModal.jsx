@@ -4,10 +4,8 @@ import { useState, useEffect } from 'react';
 
 const MovieModal = ({ name, poster, release, overview, movieID, closeModal }) => {
     const [data, setData] = useState([]);
-    const [curMovieID, setCurMovieID] = useState(null);
 
-
-    const fetchData = async(ID) => {
+    const fetchData = async (ID) => {
         const apiKey = import.meta.env.VITE_API_KEY;
         const response = await fetch(`https://api.themoviedb.org/3/movie/${ID}/videos?api_key=${apiKey}&language=en-US`);
         const vData = await response.json();
@@ -15,12 +13,15 @@ const MovieModal = ({ name, poster, release, overview, movieID, closeModal }) =>
     }
 
     useEffect(() => {
-        
+
         fetchData(movieID)
 
 
     }, [movieID]);
 
+    /*
+    Gets trailer key and adds to embed URL. If movie does not have official trailer, the key to the first movie video is used.
+    */
     let trailerURL = undefined;
     if (data.length) {
         const actualTrailerKey = data.filter((e) => (e.name === 'Official Trailer'));
