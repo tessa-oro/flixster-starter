@@ -5,7 +5,9 @@ function Footer() {
     return (
         <footer>
             <div>
-                <p>Contact: 111-111-1111</p>
+                <h3>About</h3> 
+                <p>Created by: Tessa Orozco</p>
+                <p>Contac: email123@email.com</p>
             </div>
         </footer>
     );
