@@ -8,12 +8,14 @@ const Sidebar = ({movieMap}) => {
 
     return (
         <div id="sidebar">
-            <h2> &#128153; Favorite Movies</h2>
+            <span>
+            <h2>Favorites</h2>
             <div>
             {movieMap.map(movie => (
-                <p id="movieName">{movie}</p>
+                <p id="movieName">&#128153; {movie}</p>
             ))}
             </div>
+            </span>
         </div>
     );
 }

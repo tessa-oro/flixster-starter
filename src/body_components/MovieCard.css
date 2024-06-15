@@ -1,9 +1,9 @@
 #movieCard {
-    box-shadow: 2px 2px 5px rgba(101, 101, 101, 0.539);
+    box-shadow: 3px 3px 8px rgba(31, 31, 31, 0.539);
     width: 200px;
-    height: 400px;
+    height: 380px;
     border-radius: 10px;
-    padding: 20px;
+    padding: 0px;
     cursor: pointer;
     transition: 0.5s ease;
     background-color: rgb(81, 81, 81);
@@ -16,6 +16,7 @@
 #movieCard:hover {
     box-shadow: 0px 4px 4px 8px rgba(202, 202, 202, 0.609);
     transform: translate3d(0, -2px, 0) scale(1.04);
+    background-color: #cccccc;
 }
 
 p {
@@ -24,22 +25,37 @@ p {
 }
 
 #moviePoster {
-    height: 250px;
+    width: 100%;
+    height: auto;
     border-radius: 7px;
+    padding: 0px;
+    margin: 0px;
 }
 
 #movieRating {
     font-size: 0.8em;
+    display: inline-block;
+}
+
+#emptyHeart {
+    display: inline-block;
+    margin-left: 40px;
+}
+
+#blueHeart {
+    display: inline-block;
+    margin-left: 40px;
 }
 
 #seeDetails {
-    background-color: rgb(51, 51, 51);
+    background-color: rgb(67, 67, 67);
     color: white; 
     border-radius: 10px; 
     padding: 5px 8px; 
+    margin-bottom: 10px;
     transition: background-color 0.2s ease; 
     font-weight: lighter;
-    font-size: small;
+    font-size: x-small;
     display: block;
     margin: auto;
     text-align: center;

@@ -22,6 +22,10 @@
     padding-bottom: 30px;
 }
 
+#modalMoviePoster {
+    width: 100%;
+}
+
 #close {
     cursor: pointer;
 }
@@ -36,6 +40,27 @@
     z-index: 999;
 }
 
-#modal-content {
+#modalContent {
     padding-left: 30px;
+    display: grid; grid-template-columns: 1fr 2fr; grid-gap: 10px; align-items: center;
+}
+
+#modalLeft {
+    display: flex; flex-direction: column; justify-content: center;
+}
+
+#modalRight {
+    display: flex; flex-direction: column; justify-content: center;
+}
+
+#modalMovieReleaseDate {
+    padding-top: 40px;
+}
+
+#trailer {
+    border-color: rgba(255, 255, 255, 0);
+    width: 400px;
+    height: 400px;
+    padding-bottom: 40px;
+    margin-left: 90px;
 }

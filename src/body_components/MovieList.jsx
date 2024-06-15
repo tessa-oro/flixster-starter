@@ -19,31 +19,29 @@ const MovieList = () => {
     const [modalMovie, setModalMovie] = useState([]);
     const [favMovies, setFavMovies] = useState([]);
 
-    useEffect(() => {
-        const options = {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MTI5ODRiYmFiNGJhMmRiMjViOTE2NTVjYTY0MDU2ZiIsInN1YiI6IjY2Njc2NGZjNGMyMDcxYWJlYWJlNzcwOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ytUyI8njIl9Uh_mx_PyZNfPgDiQaYmkVjCo7uCNkarU'
-            }
-            };
+//use iframe to show trailer
+//check if type is teaser
+//search movie video api
 
-            let url = `https://api.themoviedb.org/3/movie/now_playing?language=en-US&include_adult=false&page=${pageNum}`;
+    useEffect(() => {
+        const apiKey = import.meta.env.VITE_API_KEY;
+
+            let url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}&language=en-US&include_adult=false&page=${pageNum}`;
             if (searchMovie) { //fetches search api with query of movie the user is searching for
-                    url = `https://api.themoviedb.org/3/search/movie?query=${searchMovie}&page=${pageNum}&language=en-US&include_adult=false&api_key=912984bbab4ba2db25b91655ca64056f`;
-                    fetch(url, options)
+                    url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${searchMovie}&page=${pageNum}&language=en-US&include_adult=false&api_key=912984bbab4ba2db25b91655ca64056f`;
+                    fetch(url)
                     .then(response => response.json())
-                    .then(response => setSearchResults([...searchResults, ...response.results]))
+                    .then(response => setSearchResults([...response.results]))
                     .catch(err => console.error(err)); 
              } else if (wantSort) { //fetches sort api, sorted by the option user selected
-                url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=${pageNum}&sort_by=${sortValue}`;
-                fetch(url, options)
+                url = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&include_adult=false&include_video=false&language=en-US&page=${pageNum}&sort_by=${sortValue}`;
+                fetch(url)
                 .then(response => response.json())
-                .then(response => setSortResults([...sortResults, ...response.results]))
+                .then(response => setSortResults([...response.results]))
                 .catch(err => console.error(err)); 
              } else { //fetches now playing
                 setPageNum(1);
-                fetch(url, options)
+                fetch(url)
                 .then(response => response.json())
                 .then(response => setData([...data, ...response.results]))
                 .catch(err => console.error(err));
@@ -130,29 +128,34 @@ const MovieList = () => {
                         <input id='searchBar' input='text' name='movieSearch' placeholder='search'></input>
                         <button id='searchGo'>Go</button>
                     </form>
-                    <button onClick={showSearch}>Back to Now Playing</button>
+                    <button id="backToPlaying" onClick={showSearch}>Back to Now Playing</button>
                     <div id="cardSection">
                         {searchResults.map(movie => (
                             <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                             name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random}`}
-                            modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}/>)
+                            modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}
+                            removeFromBar={() => removeFromBar(movie.title)}/>)
                         )}
                         { showModal ? (
-                            <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
+                            <MovieModal name={modalMovie.title} movieID={modalMovie.id} key={`${modalMovie.id}-${Math.random}`} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
                         ) : (<></>)}                     
                     </div>
-                    <button onClick={loadMoreMovies}>Load More</button>
                 </>
             ) : (
                 <div>
-                <button onClick={showSearch} id="searchButton">Search Movies</button>
-                <label id="sortLabel">Sort by:</label>
-                    <select value={sortPick} onChange={handleSort} name="sort" id="sort-option">
+                <span id="buttonBar">
+                <button onClick={showSearch} id="searchButton"><span>Search Movies</span></button>
+                <div id="sortBox"><span>
+                    <label id="sortLabel">Sort by:</label>
+                    <select value={sortPick} onChange={handleSort} name="sort" id="sortOption">
                         <option value="">--none--</option>
                         <option value="title">Title</option>
                         <option value="rating">Rating</option>
                         <option value="relDate">Release Date</option>
                     </select>
+                    </span>
+                </div>
+                </span>
                 <div id="mainBody">
                 {wantSort ? ( 
                     <div id="movies">
@@ -160,13 +163,14 @@ const MovieList = () => {
                     {sortResults.map(movie => (
                         <MovieCard poster={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                         name={movie.title} rating={movie.vote_average} key={`${movie.id}-${Math.random *10}`}
-                        modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}/>)
+                        modalOpen={() => displayModal(movie)} addToBar={() => addToBar(movie.title)}
+                        removeFromBar={() => removeFromBar(movie.title)}/>)
                     )} 
                     { showModal ? (
-                            <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
+                            <MovieModal name={modalMovie.title} movieID={modalMovie.id} key={`${modalMovie.id}-${Math.random}`} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
                     ) : (<></>)}                    
                     </div>
-                    <button onClick={loadMoreMovies}>Load More</button> </div>
+                     </div>
                 ) :
                 (<div id="movies">
                 <div id="cardSection">
@@ -177,7 +181,7 @@ const MovieList = () => {
                             removeFromBar={() => removeFromBar(movie.title)}/>)
                         )}
                         { showModal ? (
-                            <MovieModal name={modalMovie.title} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
+                            <MovieModal name={modalMovie.title} movieID={modalMovie.id} key={`${modalMovie.id}-${Math.random}`} poster={`https://image.tmdb.org/t/p/w500${modalMovie.poster_path}`} closeModal={closeModal} release={modalMovie.release_date} overview={modalMovie.overview} />
                         ) 
                         : (<></>)} 
                 </div> 

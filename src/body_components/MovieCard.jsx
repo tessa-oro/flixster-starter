@@ -18,15 +18,15 @@ const MovieCard = ({name, poster, rating, modalOpen, addToBar, removeFromBar}) =
         <div id="movieCard">
         <div>
             <img id="moviePoster" src={poster}/>
-            <p id="movieName">{name}</p>
-            <p id="movieRating">Rating: {rating}</p>
+            {/* <p id="movieName">{name}</p> */}
             <span> 
+                <p id="movieRating">{rating}&#11088;</p>
                 {!heartClicked && <p id='emptyHeart' onClick={switchHeart}>&#9825;</p> }
                 {heartClicked && <p id='blueHeart' onClick={switchHeart}>&#128153;</p>}
             </span>
         </div>
         <div id="seeDetailsBox">
-        <button id="seeDetails" onClick={modalOpen}>see details</button>
+        <button id="seeDetails" onClick={modalOpen}>more</button>
         </div>
         </div>
     );

@@ -3,7 +3,11 @@ import "./Footer.css"
 
 function Footer() {
     return (
-        <footer></footer>
+        <footer>
+            <div>
+                <p>Contact: 111-111-1111</p>
+            </div>
+        </footer>
     );
 }
 

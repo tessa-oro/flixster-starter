@@ -5,7 +5,63 @@
 }
 
 #searchButton {
-    margin-right: 4%;
+    margin-left: 22%;
+    margin-right: 10px;
+    padding: 0.6em 2em;
+    align-items: center;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    display: flex;
+    font-family: Phantomsans, sans-serif;
+    font-size: 20px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 140px;
+    padding-top: 8px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 8px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+#searchButton:active,
+#searchButton:hover {
+  outline: 0;
+}
+
+#searchButton span{
+  background-color: rgb(5, 6, 45);
+  padding: 16px 24px;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  transition: 300ms;
+  padding: 5px;
+  padding-bottom: 1px;
+  padding-top: 9px;
+  font-weight: 580;
+  font-size: .9em;
+}
+
+#searchButton:hover span{
+  background: none;
+}
+
+@media (min-width: 768px) {
+  .button-64 {
+    font-size: 24px;
+    min-width: 196px;
+  }
 }
 
 #sortLabel {
@@ -25,4 +81,102 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#sortBox {
+  align-items: center;
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-family: Phantomsans, sans-serif;
+  font-size: 15px;
+  justify-content: center;
+  line-height: 1em;
+  max-width: 400px;
+  min-width: 140px;
+  padding-top: 8px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 8px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#sortBox span {
+  background-color: rgb(5, 6, 45);
+  padding: 16px 24px;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  transition: 300ms;
+  padding: 5px;
+  font-size: .8em;
+}
+
+@media (min-width: 768px) {
+    #sortBox {
+    font-size: 24px;
+    min-width: 196px;
+  }
+}
+
+#buttonBar {
+    display: flex;
+    align-content: center;
+    flex: 1;
+    padding-left: 20%;
+}
+
+#sortOption {
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+#sortLabel {
+    font-size: .85em;
+    padding-right: 5px;
+}
+
+
+#searchGo {
+    background-color: #973cff;
+    border-radius: 20px;
+    font-size: smaller;
+    margin-bottom: 20px;
+    color:rgb(255, 255, 255);
+    padding: 6px;
+}
+
+#searchGo:hover {
+    color: rgb(76, 181, 255);
+    background-color: #bc81ff;
+}
+
+#searchBar {
+    border-radius: 20px;
+    padding: 6px;
+    font-size: medium;
+}
+
+#backToPlaying {
+    background-color: #8419ff74;
+    border-radius: 20px;
+    font-size: smaller;
+    margin-bottom: 20px;
+    color:rgb(255, 255, 255);
+    padding: 6px;
+    font-weight: 500;
+}
+
+#backToPlaying:hover {
+    color: rgb(255, 255, 255);
+    background-color: #bc81ff;
 }
