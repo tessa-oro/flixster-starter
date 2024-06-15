@@ -36,7 +36,6 @@ const MovieList = () => {
                 .then(response => setSortResults([...response.results]))
                 .catch(err => console.error(err));
         } else { //fetches now playing
-            setPageNum(1);
             fetch(url)
                 .then(response => response.json())
                 .then(response => setData([...data, ...response.results]))
