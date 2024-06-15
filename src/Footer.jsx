@@ -7,7 +7,7 @@ function Footer() {
             <div>
                 <h3>About</h3> 
                 <p>Created by: Tessa Orozco</p>
-                <p>Contac: email123@email.com</p>
+                <p>Contact: email123@email.com</p>
             </div>
         </footer>
     );

@@ -185,7 +185,7 @@ const MovieList = () => {
                         ) 
                         : (<></>)} 
                 </div> 
-                <button id="loadMore" onClick={loadMoreMovies}>Load More</button>
+                <button id="loadMore" onClick={loadMoreMovies}><span>Load More</span></button>
                 </div>)}
                 <Sidebar movieMap={favMovies}/>
                 </div>
