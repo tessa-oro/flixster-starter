@@ -46,7 +46,7 @@ Deployed Application (optional): [Flixster Deployed Site](https://flixster-start
 ### Walkthrough Video
 
 `TODO://`
-https://www.loom.com/share/6cb969f0f7db449e98bfcc295539659e?sid=d8f89074-7f25-49ad-bc2e-b8a3cbb3f3c6
+https://www.loom.com/share/b3a030457590447f8361e28d22dde151?sid=d275079c-8880-48ba-bfea-59fa030febff
 
 `ADD_EMBEDDED_CODE_HERE`
 
